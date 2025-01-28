@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SalesFlow.Communication\SalesFlow.Communication.csproj" />
+    <ProjectReference Include="..\SalesFlow.Domain\SalesFlow.Domain.csproj" />
+    <ProjectReference Include="..\SalesFlow.Exception\SalesFlow.Exception.csproj" />
+    <ProjectReference Include="..\SalesFlow.Infrastructure\SalesFlow.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -97,11 +97,29 @@ namespace SalesFlow.Exception {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item with ID {0} not found in this sale..
+        /// </summary>
+        public static string SALE_ITEM_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SALE_ITEM_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The sale must have at least one item..
         /// </summary>
         public static string SALE_MUST_HAVE_ONE_ITEM {
             get {
                 return ResourceManager.GetString("SALE_MUST_HAVE_ONE_ITEM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sale not found..
+        /// </summary>
+        public static string SALE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("SALE_NOT_FOUND", resourceCulture);
             }
         }
         

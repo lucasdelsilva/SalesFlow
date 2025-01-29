@@ -22,5 +22,8 @@ public static class DependecyInjectionExtension
         //Sale
         serviceDescriptors.AddScoped<ISaleCreateUseCase, SaleCreateUseCase>();
         serviceDescriptors.AddScoped<ISaleGetAllUseCase, SaleGetAllUseCase>();
+        serviceDescriptors.AddScoped<ISaleGetByIdUseCase, SaleGetByIdUseCase>();
+        serviceDescriptors.AddScoped<ISaleUpdateUseCase, SaleUpdateUseCase>();
+        serviceDescriptors.AddScoped<ISaleItemUpdateUseCase, SaleItemUpdateUseCase>();
     }
 }

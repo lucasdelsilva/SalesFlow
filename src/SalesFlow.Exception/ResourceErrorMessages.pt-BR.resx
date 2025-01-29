@@ -129,8 +129,14 @@
   <data name="SALE_ITEM_MUST_HAVE_ONE_ITEM" xml:space="preserve">
     <value>É necessário incluir pelo menos um item na venda.</value>
   </data>
+  <data name="SALE_ITEM_NOT_FOUND" xml:space="preserve">
+    <value>Item com ID {0} não encontrado nesta venda.</value>
+  </data>
   <data name="SALE_MUST_HAVE_ONE_ITEM" xml:space="preserve">
     <value>A venda deve ter pelo menos um item.</value>
+  </data>
+  <data name="SALE_NOT_FOUND" xml:space="preserve">
+    <value>Venda não encontrada.</value>
   </data>
   <data name="UNITY_VALUE_MUST_GREATER_THAN_ZERO" xml:space="preserve">
     <value>O valor unitário deve ser maior que zero.</value>

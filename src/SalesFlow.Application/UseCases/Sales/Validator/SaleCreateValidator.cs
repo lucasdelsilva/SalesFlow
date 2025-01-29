@@ -3,9 +3,9 @@ using SalesFlow.Communication.Request.Sales;
 using SalesFlow.Exception;
 
 namespace SalesFlow.Application.UseCases.Sales.Validator;
-public class SaleRequestValidator : AbstractValidator<RequestSaleCreateOrUpdateJson>
+public class SaleCreateValidator : AbstractValidator<RequestSaleCreateJson>
 {
-    public SaleRequestValidator()
+    public SaleCreateValidator()
     {
         RuleFor(x => x.CustomerName)
             .NotEmpty()
@@ -18,6 +18,6 @@ public class SaleRequestValidator : AbstractValidator<RequestSaleCreateOrUpdateJ
             .WithMessage(ResourceErrorMessages.SALE_ITEM_MUST_HAVE_ONE_ITEM);
 
         RuleForEach(x => x.Items)
-            .SetValidator(new SaleItemRequestValidator());
+            .SetValidator(new SaleItemCreateValidator());
     }
 }

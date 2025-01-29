@@ -27,8 +27,18 @@ internal class SalesRepository : ISalesWriteOnlyRepository, ISalesReadOnlyReposi
         return await _dbContext.Sales.AsNoTracking().OrderByDescending(x => x.Date).ToListAsync();
     }
 
+    public async Task<Sale?> GetById(long id)
+    {
+        return await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id));
+    }
+
     public void Update(Sale request)
     {
         _dbContext.Sales.Update(request);
+    }
+
+    public async Task<Sale?> UpdateOrRemoveGetById(long id)
+    {
+        return await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id));
     }
 }

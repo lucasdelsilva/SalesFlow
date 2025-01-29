@@ -3,9 +3,9 @@ using SalesFlow.Communication.Request.Sales;
 using SalesFlow.Exception;
 
 namespace SalesFlow.Application.UseCases.Sales.Validator;
-public class SaleItemRequestValidator : AbstractValidator<SaleItemRequest>
+public class SaleItemUpdateValidator : AbstractValidator<RequestSaleItemUpdateJson>
 {
-    public SaleItemRequestValidator()
+    public SaleItemUpdateValidator()
     {
         RuleFor(x => x.ProductName)
             .NotEmpty()

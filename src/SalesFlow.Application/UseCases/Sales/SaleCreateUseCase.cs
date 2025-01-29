@@ -23,7 +23,8 @@ public class SaleCreateUseCase : ISaleCreateUseCase
         _unitOfWork = unitOfWork;
         _salesReadOnlyRepository = salesReadOnlyRepository;
     }
-    public async Task<ResponseSaleCreateJson> Create(RequestSaleCreateOrUpdateJson request)
+
+    public async Task<ResponseSaleJson> Create(RequestSaleCreateJson request)
     {
         Validate(request);
 
@@ -39,11 +40,11 @@ public class SaleCreateUseCase : ISaleCreateUseCase
         await _salesWriteOnlyRepository.Create(sale);
         await _unitOfWork.Commit();
 
-        return _mapper.Map<ResponseSaleCreateJson>(sale);
+        return _mapper.Map<ResponseSaleJson>(sale);
     }
-    private void Validate(RequestSaleCreateOrUpdateJson request)
+    private void Validate(RequestSaleCreateJson request)
     {
-        var validator = new SaleRequestValidator();
+        var validator = new SaleCreateValidator();
 
         var result = validator.Validate(request);
         if (!result.IsValid)

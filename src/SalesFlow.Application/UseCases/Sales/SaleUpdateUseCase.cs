@@ -3,6 +3,7 @@ using SalesFlow.Application.UseCases.Sales.Validator;
 using SalesFlow.Communication.Request.Sales;
 using SalesFlow.Domain.Repositories.Interfaces;
 using SalesFlow.Domain.Repositories.Sales;
+using SalesFlow.Domain.Services.LoggedUser;
 using SalesFlow.Exception;
 using SalesFlow.Exception.ExceptionBase;
 
@@ -13,19 +14,22 @@ public class SaleUpdateUseCase : ISaleUpdateUseCase
     private readonly ISalesWriteOnlyRepository _salesWriteOnlyRepository;
     private readonly ISalesReadOnlyRepository _salesReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILoggedUser _loggedUser;
 
-    public SaleUpdateUseCase(ISalesWriteOnlyRepository salesWriteOnlyRepository, ISalesReadOnlyRepository salesReadOnlyRepository, IUnitOfWork unitOfWork)
+    public SaleUpdateUseCase(ISalesWriteOnlyRepository salesWriteOnlyRepository, ISalesReadOnlyRepository salesReadOnlyRepository, IUnitOfWork unitOfWork, ILoggedUser loggedUser)
     {
         _salesWriteOnlyRepository = salesWriteOnlyRepository;
         _unitOfWork = unitOfWork;
         _salesReadOnlyRepository = salesReadOnlyRepository;
+        _loggedUser = loggedUser;
+
     }
 
     public async Task Update(long id, RequestSaleUpdateJson request)
     {
         Validate(request);
-
-        var sale = await _salesReadOnlyRepository.UpdateOrRemoveGetById(id);
+        var user = await _loggedUser.Get();
+        var sale = await _salesReadOnlyRepository.UpdateOrRemoveGetById(user, id);
         if (sale is null)
             throw new NotFoundException(ResourceErrorMessages.SALE_NOT_FOUND);
 

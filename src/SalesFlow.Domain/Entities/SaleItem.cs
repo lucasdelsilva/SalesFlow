@@ -6,6 +6,7 @@ public class SaleItem
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
     public decimal TotalPrice { get; set; }
+    public long SaleId { get; set; }
 
     // Método para calcular o valor total do item
     // Pode ficar no response

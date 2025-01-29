@@ -70,6 +70,114 @@ namespace SalesFlow.Exception {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This email is already in use..
+        /// </summary>
+        public static string EMAIL_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("EMAIL_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-mail is required..
+        /// </summary>
+        public static string EMAIL_EMPTY {
+            get {
+                return ResourceManager.GetString("EMAIL_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-mail is not valid..
+        /// </summary>
+        public static string EMAIL_INVALID {
+            get {
+                return ResourceManager.GetString("EMAIL_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email or Password invalid..
+        /// </summary>
+        public static string EMAIL_OR_PASSWORD_INVALID {
+            get {
+                return ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password should be a minimum of 8 characters, containing at least one uppercase letter, one lowercase Your password should be a minimum of 8 characters, containing at least one uppercase letter, one lowercase letter, one number, and one special character (e.g., !, ?, *, .)..
+        /// </summary>
+        public static string INVALID_PASSWORD {
+            get {
+                return ResourceManager.GetString("INVALID_PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is required..
+        /// </summary>
+        public static string NAME_EMPTY {
+            get {
+                return ResourceManager.GetString("NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Password is not equals..
+        /// </summary>
+        public static string PASSWORD_EQUAL {
+            get {
+                return ResourceManager.GetString("PASSWORD_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be longer than 8 characters..
+        /// </summary>
+        public static string PASSWORD_LESSTHAN_8 {
+            get {
+                return ResourceManager.GetString("PASSWORD_LESSTHAN_8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contain 1 lowercase letter..
+        /// </summary>
+        public static string PASSWORD_LOWER_CASE_LETTER {
+            get {
+                return ResourceManager.GetString("PASSWORD_LOWER_CASE_LETTER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contain at least 1 number..
+        /// </summary>
+        public static string PASSWORD_NUMBER {
+            get {
+                return ResourceManager.GetString("PASSWORD_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contain at least 1 special character..
+        /// </summary>
+        public static string PASSWORD_SPECIAL_CHARACTERS {
+            get {
+                return ResourceManager.GetString("PASSWORD_SPECIAL_CHARACTERS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contain 1 capital letter..
+        /// </summary>
+        public static string PASSWORD_UPPER_CASE_LETTER {
+            get {
+                return ResourceManager.GetString("PASSWORD_UPPER_CASE_LETTER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product name is required..
         /// </summary>
         public static string PRODUCT_NAME_REQUIRED {

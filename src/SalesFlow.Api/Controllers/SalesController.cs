@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SalesFlow.Application.UseCases.Sales.Interfaces;
 using SalesFlow.Communication.Request.Sales;
 using SalesFlow.Communication.Response;
@@ -8,6 +9,7 @@ using SalesFlow.Exception;
 namespace SalesFlow.Api.Controllers;
 [Route("api/sales")]
 [ApiController]
+[Authorize]
 public class SalesController : ControllerBase
 {
     [HttpPost]
@@ -42,6 +44,16 @@ public class SalesController : ControllerBase
             return Ok(response);
 
         return NotFound(ResourceErrorMessages.SALE_NOT_FOUND);
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(typeof(ResponseSaleJson), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteById([FromServices] ISaleDeleteUseCase useCase, [FromRoute] long id)
+    {
+        await useCase.Delete(id);
+        return NoContent();
     }
 
     [HttpPut]

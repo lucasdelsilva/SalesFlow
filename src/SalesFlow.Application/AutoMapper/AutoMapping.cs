@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SalesFlow.Application.AutoMapper.Helpers;
 using SalesFlow.Communication.Request.Sales;
+using SalesFlow.Communication.Request.User;
 using SalesFlow.Communication.Response.Sales;
 using SalesFlow.Domain.Entities;
 
@@ -45,6 +46,11 @@ public class AutoMapping : Profile
             .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
             .ForMember(dest => dest.TotalPrice, opt =>
                 opt.MapFrom(src => (src.Quantity * src.UnitPrice).RoundToTwo()));
+
+        CreateMap<RequestRegisterUserJson, User>()
+            .ForMember(dest => dest.Email, src => src.MapFrom(x => x.Email.ToLower()))
+            .ForMember(dest => dest.UserId, src => src.MapFrom(x => Guid.NewGuid()))
+            .ForMember(dest => dest.Password, conf => conf.Ignore());
     }
 
     private void EntityToResponse()

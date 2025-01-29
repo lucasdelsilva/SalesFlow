@@ -5,6 +5,7 @@ using SalesFlow.Communication.Request.Sales;
 using SalesFlow.Domain.Entities;
 using SalesFlow.Domain.Repositories.Interfaces;
 using SalesFlow.Domain.Repositories.Sales;
+using SalesFlow.Domain.Services.LoggedUser;
 using SalesFlow.Exception;
 using SalesFlow.Exception.ExceptionBase;
 
@@ -15,20 +16,24 @@ public class SaleItemUpdateUseCase : ISaleItemUpdateUseCase
     private readonly ISalesReadOnlyRepository _salesReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ILoggedUser _loggedUser;
 
-    public SaleItemUpdateUseCase(ISalesWriteOnlyRepository salesWriteOnlyRepository, ISalesReadOnlyRepository salesReadOnlyRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public SaleItemUpdateUseCase(ISalesWriteOnlyRepository salesWriteOnlyRepository, ISalesReadOnlyRepository salesReadOnlyRepository, IUnitOfWork unitOfWork, IMapper mapper, ILoggedUser loggedUser)
     {
         _mapper = mapper;
         _salesWriteOnlyRepository = salesWriteOnlyRepository;
         _unitOfWork = unitOfWork;
         _salesReadOnlyRepository = salesReadOnlyRepository;
+        _loggedUser = loggedUser;
+
     }
 
     public async Task UpdateItem(long saleId, RequestSaleItemUpdateJson request)
     {
         Validate(request);
 
-        var sale = await _salesReadOnlyRepository.UpdateOrRemoveGetById(saleId);
+        var user = await _loggedUser.Get();
+        var sale = await _salesReadOnlyRepository.UpdateOrRemoveGetById(user, saleId);
         if (sale is null)
             throw new NotFoundException(ResourceErrorMessages.SALE_NOT_FOUND);
 

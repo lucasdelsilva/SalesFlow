@@ -7,4 +7,6 @@ public class Sale
     public string CustomerName { get; set; } = string.Empty;
     public decimal TotalAmount { get; set; }
     public List<SaleItem?> Items { get; set; } = [];
+    public long UserId { get; set; }
+    public User User { get; set; } = default!;
 }

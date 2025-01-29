@@ -3,7 +3,7 @@
 namespace SalesFlow.Domain.Repositories.Sales;
 public interface ISalesReadOnlyRepository
 {
-    Task<List<Sale>> GetAll();
-    Task<Sale?> GetById(long id);
-    Task<Sale?> UpdateOrRemoveGetById(long id);
+    Task<List<Sale>> GetAll(Entities.User user);
+    Task<Sale?> GetById(Entities.User user, long id);
+    Task<Sale?> UpdateOrRemoveGetById(Entities.User user, long id);
 }

@@ -18,18 +18,22 @@ internal class SalesRepository : ISalesWriteOnlyRepository, ISalesReadOnlyReposi
 
     public async Task Delete(long id)
     {
-        var sale = await _dbContext.Sales.FindAsync(id);
-        _dbContext.Sales.Remove(sale!);
+        var sale = await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id));
+        if (sale is not null)
+        {
+            _dbContext.SaleItems.RemoveRange(sale.Items!);
+            _dbContext.Sales.Remove(sale);
+        }
     }
 
-    public async Task<List<Sale>> GetAll()
+    public async Task<List<Sale>> GetAll(Domain.Entities.User user)
     {
-        return await _dbContext.Sales.AsNoTracking().OrderByDescending(x => x.Date).ToListAsync();
+        return await _dbContext.Sales.AsNoTracking().Where(s => s.UserId.Equals(user.Id)).OrderByDescending(x => x.Date).ToListAsync();
     }
 
-    public async Task<Sale?> GetById(long id)
+    public async Task<Sale?> GetById(Domain.Entities.User user, long id)
     {
-        return await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id));
+        return await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id) && s.UserId.Equals(user.Id));
     }
 
     public void Update(Sale request)
@@ -37,8 +41,8 @@ internal class SalesRepository : ISalesWriteOnlyRepository, ISalesReadOnlyReposi
         _dbContext.Sales.Update(request);
     }
 
-    public async Task<Sale?> UpdateOrRemoveGetById(long id)
+    public async Task<Sale?> UpdateOrRemoveGetById(Domain.Entities.User user, long id)
     {
-        return await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id));
+        return await _dbContext.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id.Equals(id) && s.UserId.Equals(user.Id));
     }
 }

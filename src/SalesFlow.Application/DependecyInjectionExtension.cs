@@ -2,6 +2,8 @@
 using SalesFlow.Application.AutoMapper;
 using SalesFlow.Application.UseCases.Sales;
 using SalesFlow.Application.UseCases.Sales.Interfaces;
+using SalesFlow.Application.UseCases.User;
+using SalesFlow.Application.UseCases.User.Interface;
 
 namespace SalesFlow.Application;
 public static class DependecyInjectionExtension
@@ -25,5 +27,10 @@ public static class DependecyInjectionExtension
         serviceDescriptors.AddScoped<ISaleGetByIdUseCase, SaleGetByIdUseCase>();
         serviceDescriptors.AddScoped<ISaleUpdateUseCase, SaleUpdateUseCase>();
         serviceDescriptors.AddScoped<ISaleItemUpdateUseCase, SaleItemUpdateUseCase>();
+        serviceDescriptors.AddScoped<ISaleDeleteUseCase, SaleDeleteUseCase>();
+
+        //User
+        serviceDescriptors.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+        serviceDescriptors.AddScoped<ILoginUserUseCase, LoginUserUseCase>();
     }
 }

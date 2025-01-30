@@ -28,9 +28,9 @@ public class SaleDeleteUseCase : ISaleDeleteUseCase
     public async Task Delete(long id)
     {
         var user = await _loggedUser.Get();
-        var expense = await _salesReadOnlyRepository.UpdateOrRemoveGetById(user, id);
+        var sale = await _salesReadOnlyRepository.UpdateOrRemoveGetById(user, id);
 
-        if (expense is null)
+        if (sale is null)
             throw new NotFoundException(ResourceErrorMessages.SALE_NOT_FOUND);
 
         await _salesWriteOnlyRepository.Delete(id);

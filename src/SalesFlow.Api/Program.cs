@@ -7,6 +7,9 @@ using SalesFlow.Api.Token;
 using SalesFlow.Application;
 using SalesFlow.Domain.Security.Tokens;
 using SalesFlow.Infrastructure;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,6 +74,30 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
+//LOGS
+var currentDirectory = Directory.GetCurrentDirectory();
+var logsDirectory = Path.Combine(currentDirectory, "logs");
+
+if (!Directory.Exists(logsDirectory))
+    Directory.CreateDirectory(logsDirectory);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .Enrich.WithExceptionDetails()
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.File(path: Path.Combine(logsDirectory, "all-.log"),
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+    )
+    .WriteTo.File(path: Path.Combine(logsDirectory, "error-.log"),
+        restrictedToMinimumLevel: LogEventLevel.Error,
+        rollingInterval: RollingInterval.Day
+    ).CreateLogger();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,6 +108,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<CultureMiddleware>();
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

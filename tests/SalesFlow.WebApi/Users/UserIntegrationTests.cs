@@ -10,9 +10,8 @@ public class UserIntegrationTests : IntegrationTestsBase
     public UserIntegrationTests(WebApplicationFactory<Program> factory) : base(factory) { }
 
     [Fact]
-    public async Task Register_WhenValidData_ShouldReturnSuccess()
+    public async Task Register_WhenValidData_ReturnSuccess()
     {
-        // Arrange
         var request = new RequestRegisterUserJson
         {
             Name = "New User",
@@ -21,12 +20,10 @@ public class UserIntegrationTests : IntegrationTestsBase
             PasswordConfirm = "Test@123"
         };
 
-        // Act
         var response = await _client.PostAsync("/api/user/register", GetStringContent(request));
         var content = await response.Content.ReadAsStringAsync();
         var userResponse = JsonSerializer.Deserialize<ResponseUserJson>(content, _jsonOptions);
 
-        // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
         userResponse.Should().NotBeNull();
         userResponse!.Name.Should().Be(request.Name);
@@ -34,9 +31,8 @@ public class UserIntegrationTests : IntegrationTestsBase
     }
 
     [Fact]
-    public async Task Login_WhenValidCredentials_ShouldReturnToken()
+    public async Task Login_WhenValidCredentials_ReturnToken()
     {
-        // Arrange
         var email = "login@test.com";
         var password = "Test@123";
 
@@ -56,12 +52,10 @@ public class UserIntegrationTests : IntegrationTestsBase
             Password = password
         };
 
-        // Act
         var response = await _client.PostAsync("/api/user/login", GetStringContent(loginRequest));
         var content = await response.Content.ReadAsStringAsync();
         var userResponse = JsonSerializer.Deserialize<ResponseUserJson>(content, _jsonOptions);
 
-        // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         userResponse.Should().NotBeNull();
         userResponse!.Token.Should().NotBeNullOrEmpty();

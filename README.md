@@ -69,6 +69,15 @@ dotnet ef database update --project .\SalesFlow.Infrastructure\ --startup-projec
 ```
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
+
+## Headers
+### Opcional
+- Para erros em português utilizar:
+{ key: Accept-Language; Value : pt-BR}
+
+- Para erros em inglês não precisa utilizar nada (A aplicação reconhece EN de forma automatica), porém caso queira passar utilizar:
+{ key: Accept-Language; Value : en}
+
 ### Vendas
 #### Criar Venda
 - **POST** `/api/sales`

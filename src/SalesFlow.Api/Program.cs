@@ -10,31 +10,41 @@ using SalesFlow.Infrastructure;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add DI
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Config do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
+    config.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "SalesFlow API",
+        Version = "v1",
+        Description = "API para gerenciamento de vendas com autenticação JWT",
+        Contact = new OpenApiContact
+        {
+            Name = "Equipe de Desenvolvimento",
+            Email = "dev@empresa.com"
+        }
+    });
+
     config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Description = @"JWT Authorization header using the Bearer scheme.
-                        Enter 'Bearer' [space] and then your token in the text input below.
-                        Example: 'Bearer 12345abcdef'",
+        Description = "Autentucação JWT usando o Bearer. Exemplo: 'Bearer 12345abcdef'",
         In = ParameterLocation.Header,
-        Scheme = "Bearer",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
 
     config.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -54,6 +64,11 @@ builder.Services.AddSwaggerGen(config =>
             new List<string>()
         }
     });
+
+    // add suporte a documentação XML
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    config.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
@@ -62,7 +77,7 @@ var signing = builder.Configuration.GetValue<string>("Settings:Jwt:SigningKey");
 builder.Services.AddAuthentication(config =>
 {
     config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(config =>
 {
     config.TokenValidationParameters = new TokenValidationParameters
@@ -77,7 +92,6 @@ builder.Services.AddAuthentication(config =>
 //LOGS
 var currentDirectory = Directory.GetCurrentDirectory();
 var logsDirectory = Path.Combine(currentDirectory, "logs");
-
 if (!Directory.Exists(logsDirectory))
     Directory.CreateDirectory(logsDirectory);
 
@@ -104,13 +118,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SalesFlow API v1");
+    });
 }
 
 app.UseMiddleware<CultureMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
